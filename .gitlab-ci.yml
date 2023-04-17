@@ -1,0 +1,120 @@
+default:
+  image: linaro/wine-arm64
+
+cmd-hello-world:
+  script:
+    - wine-arm64 cmd.exe /c 'echo Hello World'
+
+nodejs-unit-tests:
+  script:
+    - echo "Execute nodejs unit tests using nodejs for windows-arm64"
+
+    - echo "Download python windows-arm64"
+    - wget -q https://www.nuget.org/api/v2/package/pythonarm64/3.11.3 -O python.zip
+    - unzip -q python.zip
+    - mv tools/ /python
+    - export WINEPATH=/python
+
+    - echo "Download node windows-arm64"
+    - NODE_VERSION=19.9.0
+    - wget -q https://nodejs.org/dist/v${NODE_VERSION}/node-v${NODE_VERSION}-win-arm64.zip
+    - unzip -q node-*.zip
+    - mv node-*-win-arm64 /node
+
+    - echo "Clone node source"
+    - git clone --depth=1 https://github.com/nodejs/node
+    - cd node
+    - mkdir Release
+    - mv /node/node.exe Release
+
+    - echo "Run node tests containing 'common' in name"
+    - wine-arm64 python.exe tools/test.py -p tap --flaky-tests=skip common || true
+
+llvm-mingw-linux-x64-hello-world:
+  script:
+    - echo "Compile and run windows-arm64 'hello world' using llvm-mingw linux-x64"
+
+    - echo "Download llvm-mingw linux-x64"
+    - wget -q https://github.com/mstorsjo/llvm-mingw/releases/download/20230320/llvm-mingw-20230320-ucrt-ubuntu-18.04-x86_64.tar.xz
+    - tar xf *.tar.xz && rm *.tar.xz
+    - mv llvm-mingw-* /llvm-mingw
+    - export PATH=/llvm-mingw/bin:$PATH
+
+    - echo "Compile Hello World"
+    - aarch64-w64-mingw32-clang++ hello_world.cpp -o hello.exe
+    - file hello.exe
+
+    - echo "Need to add {libc++,libunwind}.dll to WINEPATH"
+    - export WINEPATH=/llvm-mingw/aarch64-w64-mingw32/bin/
+
+    - echo "Execute Hello World"
+    - wine-arm64 hello.exe
+
+
+llvm-mingw-windows-arm64-hello-world:
+  script:
+    - echo "Compile and run windows-arm64 'hello world' using llvm-mingw windows-arm64"
+
+    - echo "Download llvm-mingw windows-arm64"
+    - wget -q https://github.com/mstorsjo/llvm-mingw/releases/download/20230320/llvm-mingw-20230320-ucrt-aarch64.zip
+    - unzip -q *.zip && rm *.zip
+    - mv llvm-mingw-* /llvm-mingw
+    - export WINEPATH=/llvm-mingw/bin
+
+    - echo "Compile Hello World"
+    - wine-arm64 aarch64-w64-mingw32-clang++ hello_world.cpp -o hello.exe
+    - file hello.exe
+
+    - echo "Execute Hello World"
+    - wine-arm64 hello.exe
+
+msvc-windows-x64-hello-world:
+  script:
+    - echo "Compile and run windows-arm64 'hello world' using MSVC"
+
+    - echo "Dependencies"
+    - apt update && apt install -y wine64 python3 msitools python3-simplejson python3-six ca-certificates winbind
+    - ln -s /usr/bin/wine /usr/bin/wine64
+    - echo "Download MSVC using https://github.com/mstorsjo/msvc-wine"
+    - git clone https://github.com/mstorsjo/msvc-wine
+    - msvc-wine/vsdownload.py --accept-license --dest /msvc
+    - msvc-wine/install.sh /msvc
+    - export PATH=/msvc/bin/arm64:$PATH
+
+    - echo "Compile Hello World"
+    - which cl
+    - cl hello_world.cpp
+    - file hello_world.exe
+
+    - echo "Execute Hello World"
+    - wine-arm64 hello_world.exe
+
+compile-and-run-ninja:
+  script:
+    - echo "Compile and run windows-arm64 ninja using llvm-mingw windows-arm64"
+
+    - echo "Download llvm-mingw windows-arm64"
+    - wget -q https://github.com/mstorsjo/llvm-mingw/releases/download/20230320/llvm-mingw-20230320-ucrt-aarch64.zip
+    - unzip -q *.zip && rm *.zip
+    - mv llvm-mingw-* /llvm-mingw
+    - rm /llvm-mingw/bin/ld # confuse cmake
+    - export WINEPATH=/llvm-mingw/bin
+
+    - echo "Download cmake windows-arm64"
+    - wget -q https://github.com/Kitware/CMake/releases/download/v3.26.3/cmake-3.26.3-windows-arm64.zip
+    - unzip -q *.zip && rm *.zip
+    - mv cmake-* /cmake/
+    - export WINEPATH="/cmake/bin;$WINEPATH"
+
+    - echo "Download ninja windows-arm64"
+    - wget -q https://woastorage.blob.core.windows.net/packages/ninja/ninja_v1.11.1.zip
+    - unzip *.zip && rm *.zip
+    - mv ninja.exe /cmake/bin/
+
+    - echo "Clone ninja"
+    - git clone https://github.com/ninja-build/ninja && cd ninja
+    - mkdir build && cd build
+    - wine-arm64 cmake ../ -GNinja -DCMAKE_CXX_COMPILER=aarch64-w64-mingw32-clang++.exe
+    - wine-arm64 ninja
+    - file ninja.exe
+    - wine-arm64 ./ninja.exe --version
