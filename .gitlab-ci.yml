@@ -16,7 +16,7 @@ nodejs-unit-tests:
     - export WINEPATH=/python
 
     - echo "Download node windows-arm64"
-    - NODE_VERSION=19.9.0
+    - NODE_VERSION=20.0.0
     - wget -q https://nodejs.org/dist/v${NODE_VERSION}/node-v${NODE_VERSION}-win-arm64.zip
     - unzip -q node-*.zip
     - mv node-*-win-arm64 /node
