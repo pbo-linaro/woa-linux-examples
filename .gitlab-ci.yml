@@ -3,24 +3,24 @@ default:
 
 cmd-hello-world:
   script:
-    - bash -x ./cmd-hello-world.sh
+    - bash -x ./job-cmd-hello-world.sh
 
 nodejs-unit-tests:
   script:
-    - bash -x ./nodejs-unit-tests.sh
+    - bash -x ./job-nodejs-unit-tests.sh
 
 llvm-mingw-linux-x64-hello-world:
   script:
-    - bash -x ./llvm-mingw-linux-x64-hello-world.sh
+    - bash -x ./job-llvm-mingw-linux-x64-hello-world.sh
 
 llvm-mingw-windows-arm64-hello-world:
   script:
-    - bash -x ./llvm-mingw-windows-arm64-hello-world.sh
+    - bash -x ./job-llvm-mingw-windows-arm64-hello-world.sh
 
 msvc-windows-x64-hello-world:
   script:
-    - bash -x ./msvc-windows-x64-hello-world.sh
+    - bash -x ./job-msvc-windows-x64-hello-world.sh
 
 compile-and-run-ninja:
   script:
-    - bash -x ./compile-and-run-ninja.sh
+    - bash -x ./job-compile-and-run-ninja.sh
