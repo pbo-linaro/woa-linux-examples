@@ -14,7 +14,8 @@ export PATH=/msvc/bin/arm64:$PATH
 
 echo "Compile Hello World"
 which cl
-cl hello_world.cpp
+# default prefix is not writable under Github Actions
+WINEPREFIX=/tmp/wine-x64-prefix/ cl hello_world.cpp
 file hello_world.exe
 
 echo "Execute Hello World"
