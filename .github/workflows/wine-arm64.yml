@@ -1,0 +1,56 @@
+name: wine-arm64
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+
+jobs:
+  cmd-hello-world:
+    runs-on: ubuntu-latest
+    container: linaro/wine-arm64
+    steps:
+      - name: checkout
+        uses: actions/checkout@v3
+      - run: bash -x ./job-cmd-hello-world.sh
+
+  nodejs-unit-tests:
+    runs-on: ubuntu-latest
+    container: linaro/wine-arm64
+    steps:
+      - name: checkout
+        uses: actions/checkout@v3
+      - run: bash -x ./job-nodejs-unit-tests.sh
+
+  llvm-mingw-linux-x64-hello-world:
+    runs-on: ubuntu-latest
+    container: linaro/wine-arm64
+    steps:
+      - name: checkout
+        uses: actions/checkout@v3
+      - run: bash -x ./job-llvm-mingw-linux-x64-hello-world.sh
+
+  llvm-mingw-windows-arm64-hello-world:
+    runs-on: ubuntu-latest
+    container: linaro/wine-arm64
+    steps:
+      - name: checkout
+        uses: actions/checkout@v3
+      - run: bash -x ./job-llvm-mingw-windows-arm64-hello-world.sh
+
+  msvc-windows-x64-hello-world:
+    runs-on: ubuntu-latest
+    container: linaro/wine-arm64
+    steps:
+      - name: checkout
+        uses: actions/checkout@v3
+      - run: bash -x ./job-msvc-windows-x64-hello-world.sh
+
+  compile-and-run-ninja:
+    runs-on: ubuntu-latest
+    container: linaro/wine-arm64
+    steps:
+      - name: checkout
+        uses: actions/checkout@v3
+      - run: bash -x ./job-compile-and-run-ninja.sh
