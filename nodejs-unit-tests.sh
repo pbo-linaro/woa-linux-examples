@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
-
 set -euo pipefail
-cd $(mktemp -d)
 
 echo "Execute nodejs unit tests using nodejs for windows-arm64"
 

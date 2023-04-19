@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
-
 set -euo pipefail
-cd $(mktemp -d)
 
 echo "Compile and run windows-arm64 'hello world' using llvm-mingw windows-arm64"
 
