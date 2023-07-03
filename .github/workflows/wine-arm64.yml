@@ -14,4 +14,5 @@ jobs:
       - name: checkout
         uses: actions/checkout@v3
       - run: uname -a
+      - run: ls /proc
       - run: bash -x ./job-cmd-hello-world.sh
