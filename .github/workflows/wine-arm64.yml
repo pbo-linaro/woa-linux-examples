@@ -9,7 +9,7 @@ on:
 jobs:
   cmd-hello-world:
     runs-on: ubuntu-latest
-    container: linaro/wine-arm64:8.10
+    container: linaro/wine-arm64:8.0
     steps:
       - name: checkout
         uses: actions/checkout@v3
