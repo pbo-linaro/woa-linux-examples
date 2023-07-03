@@ -16,4 +16,5 @@ jobs:
       - run: uname -a
       - run: ls /proc
       - run: ./a.out
+      - run: ./qemu-x86_64-static ./a.out
       - run: bash -x ./job-cmd-hello-world.sh
