@@ -19,5 +19,5 @@ jobs:
       - run: ./qemu-x86_64-static ./a.out
       - run: wine-arm64 --version
       - run: env LD_LIBRARY_PATH=/opt/wine-arm64/usr/lib/aarch64-linux-gnu qemu-aarch64-static /opt/wine-arm64/usr/bin/bash -c '/bin/echo'
-      - run: qemu-aarch64-static --version
-      - run: bash -x ./job-cmd-hello-world.sh
+      - run: PATH=$(pwd)/:$PATH qemu-aarch64-static --version
+      - run: PATH=$(pwd)/:$PATH bash -x ./job-cmd-hello-world.sh
