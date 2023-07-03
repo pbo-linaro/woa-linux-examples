@@ -13,4 +13,5 @@ jobs:
     steps:
       - name: checkout
         uses: actions/checkout@v3
-      - run: WINE_NO_EMULATOR=1 bash -x ./job-cmd-hello-world.sh
+      - run: uname -a
+      - run: bash -x ./job-cmd-hello-world.sh
